@@ -1,0 +1,12 @@
+.addContactPanel {
+  max-width: 600px;
+
+  .header {
+    display: flex;
+    align-items: center;
+
+    .back {
+      margin-right: 10px;
+    }
+  }
+}
