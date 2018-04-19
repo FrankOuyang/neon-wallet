@@ -2,7 +2,7 @@
 import React from 'react'
 import Highlighter from 'react-highlight-words'
 import Sifter from 'sifter'
-import { noop, omit, map } from 'lodash'
+import { omit, map } from 'lodash'
 
 import SelectInput, { DropdownButton } from '../SelectInput'
 
