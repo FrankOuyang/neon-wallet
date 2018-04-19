@@ -1,19 +1,19 @@
 // @flow
 import { compose, withProps } from 'recompose'
-import { connect } from 'react-redux'
 import { trim } from 'lodash'
 
 import AddContactPanel from './AddContactPanel'
-import { saveAddress } from '../../../modules/addressBook'
+import { addContactActions } from '../../../actions/contactsActions'
+import withProgressChange from '../../../hocs/withProgressChange'
+import withActions from '../../../hocs/api/withActions'
+import { LOADED } from '../../../values/state'
 
-const mapDispatchToProps = (dispatch, props) => ({
-  onSave: (name, address) => {
-    props.onSave && props.onSave()
-    return dispatch(saveAddress(trim(name), trim(address)))
-  }
+const mapContactActionsToProps = (actions, props) => ({
+  onSave: (name, address) => actions.request({ name: trim(name), address: trim(address) })
 })
 
 export default compose(
   withProps(({ name }) => ({ oldName: name })),
-  connect(null, mapDispatchToProps)
+  withProgressChange(addContactActions, LOADED, (props) => props.onSave && props.onSave()),
+  withActions(addContactActions, mapContactActionsToProps)
 )(AddContactPanel)

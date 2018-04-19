@@ -9,10 +9,10 @@ type Contacts = {
   [name: string]: string
 }
 
-const STORAGE_KEY = 'addressBook.addresses'
+const STORAGE_KEY = 'addressBook'
 
 const getContacts = async (): Promise<Contacts> => {
-  return await getStorage(STORAGE_KEY) || []
+  return getStorage(STORAGE_KEY)
 }
 
 const setContacts = async (contacts: Contacts): Promise<any> => {
@@ -31,7 +31,9 @@ const validateContact = (name: string, address: string) => {
 
 export const ID = 'CONTACTS'
 
-export const addContactActions = createRequestActions(ID, (name: string, address: string) => async (state: Object): Promise<Contacts> => {
+export const addContactActions = createRequestActions(ID, (
+  { name, address }: { name: string, address: string }
+) => async (state: Object): Promise<Contacts> => {
   validateContact(name, address)
 
   const contacts = await getContacts()
@@ -46,7 +48,9 @@ export const addContactActions = createRequestActions(ID, (name: string, address
   return newContacts
 })
 
-export const updateContactActions = createRequestActions(ID, (oldName: string, newName: string, newAddress: string) => async (state: Object): Promise<Contacts> => {
+export const updateContactActions = createRequestActions(ID, (
+  { oldName, newName, newAddress }: { oldName: string, newName: string, newAddress: string }
+) => async (state: Object): Promise<Contacts> => {
   validateContact(newName, newAddress)
 
   const contacts = await getContacts()
@@ -67,7 +71,9 @@ export const updateContactActions = createRequestActions(ID, (oldName: string, n
   return newContacts
 })
 
-export const deleteContactActions = createRequestActions(ID, (name: string) => async (state: Object): Promise<Contacts> => {
+export const deleteContactActions = createRequestActions(ID, (
+  { name }: { name: string }
+) => async (state: Object): Promise<Contacts> => {
   const contacts = await getContacts()
 
   if (!has(contacts, name)) {
